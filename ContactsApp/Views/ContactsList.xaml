@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="ContactsApp.Views.ContactsList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ContactsApp.Views"
+             xmlns:conv="clr-namespace:ContactsApp.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="640" d:DesignWidth="300"
+             SnapsToDevicePixels="True" BorderThickness="0">
+    <UserControl.Resources>
+        <conv:FirstLetterConverter x:Key="firstLetterConverter"/>
+        
+        <CollectionViewSource x:Key="cvs" Source="{Binding ContactList}">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="FullName" />
+            </CollectionViewSource.SortDescriptions>
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="FullName" Converter="{StaticResource firstLetterConverter}" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        
+        <ListView Grid.Column="0" Grid.ColumnSpan="12"
+                  Grid.Row="0"
+                  ItemsSource="{Binding Source={StaticResource cvs}}"
+                  BorderThickness="0">
+            <ListBox.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <Border HorizontalAlignment="Stretch"
+                                    BorderBrush="Black" BorderThickness="0,0,0,1">
+                                <TextBlock FontSize="24" Text="{Binding Path=Name}"
+                                           Foreground="Black" Margin="8,0,0,0"/>
+                            </Border>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Background" Value="White" />
+                            <Setter Property="Foreground" Value="White" />
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+            </ListBox.GroupStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image />
+                        <TextBlock Text="{Binding FullName}" Foreground="Black"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>
